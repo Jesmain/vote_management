@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_res_config_settings_inherit_vote_management" model="ir.ui.view">
+    <field name="name">res.config.settings.vote.management</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <div class="settings" position="inside">
+        <div class="app_settings_block" data-string="Vote management" string="Vote management" name="vote_management">
+          <h2>Vote Management Settings</h2>
+          <div class="row mt16 o_settings_container">
+            <div class="col-12 col-lg-6">
+              <label for="password">Contraseña oculta </label>
+              <field name="password"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </field>
+  </record>
+</odoo>

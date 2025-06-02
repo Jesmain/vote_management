@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="group_vote_management_user" model="res.groups">
+            <field name="name">Usuario Votos</field>
+        </record>
+
+        <record id="group_vote_management_admin" model="res.groups">
+            <field name="name">Administrador Votos</field>
+            <field name="implied_ids" eval="[(4, ref('group_vote_management_user'))]"/>
+        </record>
+    </data>
+</odoo>

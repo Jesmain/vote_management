@@ -2,10 +2,10 @@
     'name': "Vote Management",
 
     'summary': """
-        Manage voting process and vote validation""",
+        Manage voting process and vote validation.""",
 
     'description': """
-        This module facilitates the process of voting by keeping track of voting areas, participating parties and allowing voters to check the validity of their vote
+        This module facilitates the process of voting by keeping track of voting areas, participating parties and allowing voters to check the validity of their vote.
     """,
     'author': "Jesmain",
     'website': "https://github.com/Jesmain/vote_management",
@@ -14,8 +14,7 @@
     'depends': ['base'],
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+        'views/res_config_settings_view.xml',
     ],
     'installable': True,
     'application': True,
