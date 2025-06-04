@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_vote_management_district_tree" model="ir.ui.view">
+        <field name="name">vote_management.district.tree</field>
+        <field name="model">vote_management.district</field>
+        <field name="arch" type="xml">
+            <tree string="Districts">
+                <field name="name"/>
+                <field name="state_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vote_management_district_form" model="ir.ui.view">
+        <field name="name">vote_management.district.form</field>
+        <field name="model">vote_management.district</field>
+        <field name="arch" type="xml">
+            <form string="District">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="state_id"/>
+                        <field name="party_ids"/>
+                        <field name="voting_center_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_district" model="ir.actions.act_window">
+        <field name="name">Districts</field>
+        <field name="res_model">vote_management.district</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_vote_management_district_tree"/>
+    </record>
+</odoo>

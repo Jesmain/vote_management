@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_vote_management_party_tree" model="ir.ui.view">
+        <field name="name">vote_management.party.tree</field>
+        <field name="model">vote_management.party</field>
+        <field name="arch" type="xml">
+            <tree string="Parties">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vote_management_party_form" model="ir.ui.view">
+        <field name="name">vote_management.party.form</field>
+        <field name="model">vote_management.party</field>
+        <field name="arch" type="xml">
+            <form string="Party">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_party" model="ir.actions.act_window">
+        <field name="name">Parties</field>
+        <field name="res_model">vote_management.party</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_vote_management_party_tree"/>
+    </record>
+</odoo>

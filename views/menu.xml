@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="vote_management_root"
+        name="Vote management"
+        sequence="10"/>
+
+    <menuitem
+        id="vote_management_election_root"
+        name="Election"
+        action="action_vote_management_election"
+        parent="vote_management_root"
+        sequence="1"/>
+
+    <menuitem
+        id="vote_management_district_root"
+        name="Districts"
+        action="action_vote_management_district"
+        parent="vote_management_root"
+        sequence="2"/>
+
+    <menuitem
+        id="vote_management_voting_center_root"
+        name="Voting centers"
+        action="action_vote_management_voting_center"
+        parent="vote_management_root"
+        sequence="3"/>
+
+    <menuitem
+        id="vote_management_party_root"
+        name="Parties"
+        action="action_vote_management_party"
+        parent="vote_management_root"
+        sequence="4"/>
+        
+    <menuitem
+        id="vote_management_ballot_root"
+        name="Ballots"
+        action="action_vote_management_ballot"
+        parent="vote_management_root"
+        sequence="5"/>
+
+</odoo>

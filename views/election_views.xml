@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_vote_management_election_tree" model="ir.ui.view">
+        <field name="name">vote_management.election.tree</field>
+        <field name="model">vote_management.election</field>
+        <field name="arch" type="xml">
+            <tree string="Elections">
+                <field name="name"/>
+                <field name="closing_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vote_management_election_form" model="ir.ui.view">
+        <field name="name">vote_management.election.form</field>
+        <field name="model">vote_management.election</field>
+        <field name="arch" type="xml">
+            <form string="Election">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="districts_ids"/>
+                        <field name="closing_date"/>
+                        <field name="result_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_election" model="ir.actions.act_window">
+        <field name="name">Election</field>
+        <field name="res_model">vote_management.election</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_vote_management_election_tree"/>
+    </record>
+</odoo>

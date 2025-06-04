@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_vote_management_ballot_tree" model="ir.ui.view">
+        <field name="name">vote_management.ballot.tree</field>
+        <field name="model">vote_management.ballot</field>
+        <field name="arch" type="xml">
+            <tree string="Ballots">
+                <field name="base_token"/>
+                <field name="voting_center_id"/>
+                <field name="election_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vote_management_ballot_form" model="ir.ui.view">
+        <field name="name">vote_management.ballot.form</field>
+        <field name="model">vote_management.ballot</field>
+        <field name="arch" type="xml">
+            <form string="Ballot">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="base_token"/>
+                        <field name="voting_center_id"/>
+                        <field name="center_token"/>
+                        <field name="suffix_ids"/>
+                        <field name="district_id"/>
+                        <field name="election_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="vote_management_party_suffix_view_form" model="ir.ui.view">
+        <field name="name">vote.management.party.suffix.view.form</field>
+        <field name="model">vote_management.party_suffix</field>
+        <field name="arch" type="xml">
+            <form string="Party suffix">
+                <sheet>
+                    <group>
+                        <field name="suffix"/>
+                        <field name="token_id"/>
+                        <field name="party_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_ballot" model="ir.actions.act_window">
+        <field name="name">Ballots</field>
+        <field name="res_model">vote_management.ballot</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_vote_management_ballot_tree"/>
+    </record>
+</odoo>
