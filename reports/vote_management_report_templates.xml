@@ -1,0 +1,52 @@
+<odoo>
+
+  <template id="report_ballot_template">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <div class="page" style="position: relative; padding-bottom: 227px;">
+                <!-- Ballot's full token as text -->
+                <div class="text-center" style="margin-bottom: 30px;">
+                    <h1><t t-esc="docs[0].name"/></h1>
+                </div>
+                <!-- Suffixes of each of the parties -->
+                <table class="table" style="width: 100%; margin-bottom: 227px;">
+                    <t t-foreach="docs[0].suffix_ids" t-as="suffix">
+                        <tr>
+                            <!-- Suffix value as barcode -->
+                            <td style="width: 285px; text-align: center;">
+                                <img style="width:265px;height:80px;"
+                                t-att-src="'report/barcode/?barcode_type=%s&amp;value=%s&amp;
+                                width=%s&amp;height=%s'%('EAN13',suffix.value,265,80)"/>
+                            </td>
+                            <!-- Suffix value as text -->
+                            <td style="width: 113px; vertical-align: middle; font-size: 18px;">
+                                <t t-esc="suffix.value"/>
+                            </td>
+                            <!-- Name of the party for this suffix -->
+                            <td style="vertical-align: middle; font-size: 18px;">
+                                <t t-esc="suffix.party_id.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+
+                <!-- Bottom barcode area -->
+                <div style="position: absolute; bottom: 2px; left: 2px; right: 2px;">
+                <!-- Ballot's full token as a barcode -->
+                    <div style="float: left; width: 420px;">
+                        <img style="width:400px;height:100px;"
+                        t-att-src="'report/barcode/?barcode_type=%s&amp;value=%s&amp;
+                        width=%s&amp;height=%s'%('EAN13',docs[0].name,400,100)"/>
+                    </div>
+                    <!-- Space to place chosen party's barcode -->
+                    <div style="float: right; margin-left: 20px; border: 1px dashed #666; height: 100px; width: 285px;">
+                        <p style="text-align: center; vertical-alignment: center; color: #999;">
+                        Place party barcode<br/>here
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+  </template>
+</odoo>

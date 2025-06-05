@@ -1,5 +1,5 @@
 import string
-import random
+import secrets
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -10,17 +10,25 @@ class VotingCenter(models.Model):
     name = fields.Char(string='Center name', required=True)
     token = fields.Char(string='Token', readonly=True) # Determined when the record is saved
     district_id = fields.Many2one('vote_management.district', string='District', required=True)
-    state_id = fields.Many2one('res.country.state', string='State', related='district_id.state_id', domain="[('country_id.name', '=', 'United States')]")
+    state_id = fields.Many2one('res.country.state', string='State', related='district_id.state_id')
 
     @api.model
     def create(self, vals):
-        # The center's token must not changed once set for data congruence with previous ballots
+        district = self.env['vote_management.district'].search([('id', '=', vals['district_id'])])
         # The state's id's length must always be 3, padding or truncating as needed
         # Barring certain cases, like with the value 1000, the resulting token fragment should not be 000
-        state_id_str = f"{int(vals.get('state_id', 0) % 1000):03d}"
-        random_part = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        state_id_str = f"{int(district.state_id.id % 1000):03d}"
+        random_part = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(4))
         token = state_id_str + random_part
+        # The center's token must not changed once set for data congruence with previous ballots
         vals['token'] = token
 
         record = super(VotingCenter, self).create(vals)
         return record
+    
+    def write(self, vals):
+        if 'district_id' in vals:
+            for record in self:
+                if record.district_id and vals['district_id'] != record.district_id.id:
+                    raise ValidationError("You cannot change the voting center's district once it's set.")
+        return super().write(vals)

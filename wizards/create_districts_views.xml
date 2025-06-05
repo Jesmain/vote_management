@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_wizard_create_districts_form" model="ir.ui.view">
+        <field name="name">wizard.create.districts.form</field>
+        <field name="model">vote_management.wizard_create_districts</field>
+        <field name="arch" type="xml">
+            <form string="Create district by country">
+                <group>
+                    <field name="country_id"/>
+                    <field name="party_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_create_districts"
+                            type="object"
+                            string="Create districts"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_wizard_create_districts" model="ir.actions.act_window">
+        <field name="name">Create districts by country</field>
+        <field name="res_model">vote_management.wizard_create_districts</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

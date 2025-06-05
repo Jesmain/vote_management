@@ -1,5 +1,5 @@
 import string
-import random
+import secrets
 import hmac
 import hashlib
 from odoo import models, fields, api
@@ -12,17 +12,47 @@ class Ballot(models.Model):
     # name ('Full token') is base_token + center_token
     name = fields.Char(string='Full token', readonly=True)
     base_token = fields.Char(string='Base token', readonly=True)
-    voting_center_id = fields.Many2one('vote_management.voting_center', string='Voting center', readonly=True)
+    voting_center_id = fields.Many2one('vote_management.voting_center', string='Voting center')
     center_token = fields.Char(string='Center token', related='voting_center_id.token')
-    suffix_ids = fields.One2many('vote_management.party_suffix', inverse_name='token_id', string='Suffix', readonly=True)
+    suffix_ids = fields.One2many('vote_management.party_suffix', inverse_name='ballot_id', string='Suffix', readonly=True)
     district_id = fields.Many2one('vote_management.district', related='voting_center_id.district_id', string='District')
-    election_id = fields.Many2one('vote_management.election', string='Election')
+    election_id = fields.Many2one('vote_management.election', string='Election', required=True)
 
+    @api.model
+    def create(self, vals):
+        center = self.env['vote_management.voting_center'].browse(vals['voting_center_id'])
+        election = self.env['vote_management.election'].browse(vals['election_id'])
+        base_token = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(9))
+        full_token = base_token + center.token
+
+        vals.update({
+            'base_token': base_token,
+            'name': full_token,
+        })
+        record = super().create(vals)
+        
+        suffixes = record._generate_party_suffixes(center.district_id.party_ids, election.key)
+        record.suffix_ids = [(4, suffix.id) for suffix in suffixes]
+        return record
+
+    def _generate_party_suffixes(self, parties, key):
+        party_suffix = self.env['vote_management.party_suffix']
+        suffixes = []
+        for party in parties:
+            message = (self.name + party.code).encode()
+            coded_key = key.encode()
+            suffix = hmac.new(coded_key, message, hashlib.sha256).hexdigest()[:6]
+            suffixes.append(party_suffix.create({
+                'ballot_id': self.id,
+                'party_id': party.id,
+                'value': suffix,
+            }))
+        return suffixes
 
 class PartySuffix(models.Model):
     _name = 'vote_management.party_suffix'
     _description = 'Party suffix'
 
-    token_id = fields.Many2one('vote_management.ballot', string='Ballot', required=True, ondelete='cascade' )
+    ballot_id = fields.Many2one('vote_management.ballot', string='Ballot', required=True, ondelete='cascade' )
     party_id = fields.Many2one('vote_management.party', string='Party', required=True)
-    suffix = fields.Char(string='Suffix', required=True)
+    value = fields.Char(string='Value', readonly=True)

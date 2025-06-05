@@ -18,15 +18,26 @@
         <field name="model">vote_management.ballot</field>
         <field name="arch" type="xml">
             <form string="Ballot">
+                <header>
+                    <button name="%(action_report_ballot)d" string="Imprimir papeleta" type="action" class="btn-primary"
+                    attrs="{'invisible': [('name', '=', False)]}"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
                         <field name="base_token"/>
                         <field name="voting_center_id"/>
                         <field name="center_token"/>
-                        <field name="suffix_ids"/>
                         <field name="district_id"/>
                         <field name="election_id"/>
+                    </group>
+                    <group string="Party Suffixes">
+                        <field name="suffix_ids" widget="one2many_list" readonly="true">
+                            <tree string="Party Suffixes">
+                                <field name="party_id"/>
+                                <field name="value"/>
+                            </tree>
+                        </field>
                     </group>
                 </sheet>
             </form>
@@ -40,8 +51,8 @@
             <form string="Party suffix">
                 <sheet>
                     <group>
-                        <field name="suffix"/>
-                        <field name="token_id"/>
+                        <field name="value"/>
+                        <field name="ballot_id"/>
                         <field name="party_id"/>
                     </group>
                 </sheet>

@@ -5,4 +5,9 @@ class Party(models.Model):
     _description = 'Partido Político'
 
     name = fields.Char(string="Party name", required=True)
-    code = fields.Char(string="Internal code", required=True)
+    code = fields.Char(string="Internal code", readonly=True)
+
+    @api.model
+    def create(self, vals):
+        vals['code'] = self.env['ir.sequence'].next_by_code('vote_management.party') or 'PARTY000'
+        return super().create(vals)

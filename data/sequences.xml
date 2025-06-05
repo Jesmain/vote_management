@@ -1,0 +1,11 @@
+<odoo>
+
+    <record id="seq_party" model="ir.sequence">
+        <field name="name">Party Sequence</field>
+        <field name="code">vote_management.party</field>
+        <field name="prefix">PARTY</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">standard</field>
+    </record>
+</odoo>

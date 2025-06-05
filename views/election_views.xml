@@ -20,6 +20,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="key"/>
                         <field name="districts_ids"/>
                         <field name="closing_date"/>
                         <field name="result_id"/>

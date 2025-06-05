@@ -16,8 +16,21 @@
     <menuitem
         id="vote_management_district_root"
         name="Districts"
-        action="action_vote_management_district"
         parent="vote_management_root"
+        sequence="2"/>
+
+    <menuitem
+        id="vote_management_district_action"
+        name="View districts"
+        action="action_vote_management_district"
+        parent="vote_management_district_root"
+        sequence="1"/>
+        
+    <menuitem
+        id="vote_management_district_wizard"
+        name="Create districts"
+        action="action_open_wizard_create_districts"
+        parent="vote_management_district_root"
         sequence="2"/>
 
     <menuitem
