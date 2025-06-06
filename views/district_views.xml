@@ -6,14 +6,8 @@
         <field name="model">vote_management.district</field>
         <field name="arch" type="xml">
             <tree string="Districts">
-                <header>
-                    <button name="%(action_open_wizard_create_districts)d"
-                            type="action"
-                            string="Create districts"/>
-                </header>
                 <field name="state_id"/>
                 <field name="num_mps"/>
-                <field name="num_senators"/>
             </tree>
         </field>
     </record>
@@ -29,7 +23,6 @@
                         <field name="party_ids" widget="many2many_tags"/>
                         <field name="voting_center_ids" readonly="true"/>
                         <field name="num_mps"/>
-                        <field name="num_senators"/>
                     </group>
                 </sheet>
             </form>

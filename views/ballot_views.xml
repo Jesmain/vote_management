@@ -5,7 +5,8 @@
         <field name="name">vote_management.ballot.tree</field>
         <field name="model">vote_management.ballot</field>
         <field name="arch" type="xml">
-            <tree string="Ballots">
+            <tree string="Ballots" create="False">
+                <field name="name"/>
                 <field name="base_token"/>
                 <field name="voting_center_id"/>
                 <field name="election_id"/>
@@ -19,7 +20,7 @@
         <field name="arch" type="xml">
             <form string="Ballot">
                 <header>
-                    <button name="%(action_report_ballot)d" string="Imprimir papeleta" type="action" class="btn-primary"
+                    <button name="%(action_report_ballot)d" string="Print ballot" type="action" class="btn-primary"
                     attrs="{'invisible': [('name', '=', False)]}"/>
                 </header>
                 <sheet>
@@ -30,6 +31,9 @@
                         <field name="center_token"/>
                         <field name="district_id"/>
                         <field name="election_id"/>
+                        <field name="checked"/>
+                        <field name="valid"/>
+                        <field name="selected_suffix"/>
                     </group>
                     <group string="Party Suffixes">
                         <field name="suffix_ids" widget="one2many_list" readonly="true">
@@ -59,6 +63,21 @@
             </form>
         </field>
     </record>
+
+    <record id="view_ballot_search" model="ir.ui.view">
+        <field name="name">vote_management.ballot.search</field>
+        <field name="model">vote_management.ballot</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="true" string="Group by">
+                    <filter name="group_election" string="Election" context="{'group_by': 'election_id'}"/>
+                    <filter name="group_center" string="Voting Center" context="{'group_by': 'voting_center_id'}"/>
+                    <filter name="group_checked" string="Used" context="{'group_by': 'checked'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
 
     <record id="action_vote_management_ballot" model="ir.actions.act_window">
         <field name="name">Ballots</field>

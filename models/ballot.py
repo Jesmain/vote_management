@@ -18,6 +18,12 @@ class Ballot(models.Model):
     district_id = fields.Many2one('vote_management.district', related='voting_center_id.district_id', string='District')
     election_id = fields.Many2one('vote_management.election', string='Election', required=True)
 
+    # These fields are for internal use
+    checked = fields.Boolean(default=False, store=True, readonly=True)
+    valid = fields.Boolean(default=False, compute="_compute_state", store=True, readonly=True)
+    # This field is for vote counting
+    selected_suffix = fields.Char(string='Chosen suffix')
+
     @api.model
     def create(self, vals):
         center = self.env['vote_management.voting_center'].browse(vals['voting_center_id'])
@@ -48,6 +54,14 @@ class Ballot(models.Model):
                 'value': suffix,
             }))
         return suffixes
+
+    @api.depends('selected_suffix', 'suffix_ids.value')
+    def _compute_state(self):
+        for ballot in self:
+            if ballot.selected_suffix:
+                ballot.valid = ballot.selected_suffix in ballot.suffix_ids.mapped('value')
+            else:
+                ballot.valid = False
 
 class PartySuffix(models.Model):
     _name = 'vote_management.party_suffix'

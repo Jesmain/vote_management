@@ -1,0 +1,11 @@
+<odoo>
+    <template id="homepage_vote_link" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <div class="container mt-5 text-center">
+                <a href="/verify_vote" class="btn btn-primary btn-lg">
+                    Verify your vote
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

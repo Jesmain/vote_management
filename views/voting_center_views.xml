@@ -9,7 +9,7 @@
                 <field name="name"/>
                 <field name="token"/>
                 <field name="district_id"/>
-                <field name="state_id"/>
+                <field name="num_ballots"/>
             </tree>
         </field>
     </record>
@@ -22,6 +22,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="num_ballots"/>
                         <field name="token" readonly="1"/>
                         <field name="district_id"/>
                         <field name="state_id" readonly="1"/>

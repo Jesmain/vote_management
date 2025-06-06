@@ -1,12 +1,11 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-class WizardCreateDistricts(models.TransientModel):
+class CreateDistrictsWizard(models.TransientModel):
     _name = 'vote_management.wizard_create_districts'
     _description = 'Wizard to create districts by country'
 
     country_id = fields.Many2one('res.country', string='Country', required=True)
-
     party_ids = fields.Many2many('vote_management.party', string='Parties to assign', relation='create_district_wizard_party_rel')
 
     def action_create_districts(self):

@@ -9,9 +9,22 @@
     <menuitem
         id="vote_management_election_root"
         name="Election"
-        action="action_vote_management_election"
         parent="vote_management_root"
         sequence="1"/>
+    
+    <menuitem
+        id="vote_management_election_action"
+        name="View elections"
+        action="action_vote_management_election"
+        parent="vote_management_election_root"
+        sequence="1"/>
+
+    <menuitem
+        id="vote_management_wizard_create_election"
+        name="Create Election"
+        action="action_vote_management_wizard_create_election"
+        parent="vote_management_election_root"
+        sequence="2"/>
 
     <menuitem
         id="vote_management_district_root"
@@ -27,9 +40,9 @@
         sequence="1"/>
         
     <menuitem
-        id="vote_management_district_wizard"
+        id="vote_management_wizard_create_districts"
         name="Create districts"
-        action="action_open_wizard_create_districts"
+        action="action_vote_management_wizard_create_districts"
         parent="vote_management_district_root"
         sequence="2"/>
 
@@ -50,8 +63,21 @@
     <menuitem
         id="vote_management_ballot_root"
         name="Ballots"
-        action="action_vote_management_ballot"
         parent="vote_management_root"
         sequence="5"/>
+
+    <menuitem
+        id="vote_management_ballot_action"
+        name="View ballots"
+        action="action_vote_management_ballot"
+        parent="vote_management_ballot_root"
+        sequence="1"/>
+
+    <menuitem
+        id="vote_management_ballot_validation_wizard"
+        name="Validate ballot"
+        action="action_vote_management_wizard_ballot_validation"
+        parent="vote_management_ballot_root"
+        sequence="2"/>
 
 </odoo>

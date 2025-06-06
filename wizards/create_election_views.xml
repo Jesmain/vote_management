@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_vote_management_wizard_create_election" model="ir.ui.view">
+        <field name="name">vote.management.create.election.wizard.form</field>
+        <field name="model">vote_management.wizard_create_election</field>
+        <field name="arch" type="xml">
+            <form string="Create election">
+                <group>
+                    <field name="name"/>
+                    <field name="hmac_key"/>
+                    <field name="district_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button string="Create" type="object" name="action_create_election" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_wizard_create_election" model="ir.actions.act_window">
+        <field name="name">Create election</field>
+        <field name="res_model">vote_management.wizard_create_election</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -5,9 +5,9 @@
         <field name="name">vote_management.election.tree</field>
         <field name="model">vote_management.election</field>
         <field name="arch" type="xml">
-            <tree string="Elections">
+            <tree string="Elections" create="False">
                 <field name="name"/>
-                <field name="closing_date"/>
+                <field name="key"/>
             </tree>
         </field>
     </record>
@@ -21,8 +21,7 @@
                     <group>
                         <field name="name"/>
                         <field name="key"/>
-                        <field name="districts_ids"/>
-                        <field name="closing_date"/>
+                        <field name="district_ids"/>
                         <field name="result_id"/>
                     </group>
                 </sheet>

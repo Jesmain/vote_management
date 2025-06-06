@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_vote_management_ballot_validation_wizard_form" model="ir.ui.view">
+        <field name="name">vote.management.wizard.ballot.validation.form</field>
+        <field name="model">vote_management.wizard_validate_ballots</field>
+        <field name="arch" type="xml">
+            <form string="Validate ballot">
+                <group>
+                    <field name="token"/>
+                    <field name="suffix"/>
+                </group>
+                <footer>
+                    <button name="validate_vote" type="object" string="Validate" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_wizard_ballot_validation" model="ir.actions.act_window">
+        <field name="name">Validate ballot</field>
+        <field name="res_model">vote_management.wizard_validate_ballots</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
