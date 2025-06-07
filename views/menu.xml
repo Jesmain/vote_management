@@ -27,6 +27,13 @@
         sequence="2"/>
 
     <menuitem
+        id="menu_vote_management_election_results"
+        name="View results"
+        parent="vote_management_election_root"
+        action="action_vote_management_election_results"
+        sequence="3"/>
+
+    <menuitem
         id="vote_management_district_root"
         name="Districts"
         parent="vote_management_root"

@@ -31,7 +31,7 @@
                 </table>
 
                 <!-- Bottom barcode area -->
-                <div style="position: absolute; bottom: 2px; left: 2px; right: 2px;">
+                <div style="position: absolute; bottom: 0; left: 2px; right: 2px; border-top: 3px dotted black; padding-top: 30px">
                 <!-- Ballot's full token as a barcode -->
                     <div style="float: left; width: 420px;">
                         <img style="width:400px;height:100px;"

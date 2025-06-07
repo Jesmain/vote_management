@@ -25,6 +25,5 @@ class CreateDistrictsWizard(models.TransientModel):
                 'name': state.name,
                 'state_id': state.id,
                 'num_mps': 1,
-                'num_senators': 1,
                 'party_ids': [(6, 0, self.party_ids.ids)],
             })

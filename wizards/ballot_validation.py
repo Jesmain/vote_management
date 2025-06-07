@@ -25,8 +25,8 @@ class BallotValidationWizard(models.TransientModel):
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': "Voto Registrado",
-                'message': f"El voto fue {'válido' if ballot.valid else 'inválido'}.",
+                'title': "Registered vote",
+                'message': f"The vote was {'valid' if ballot.valid else 'invalid'}.",
                 'type': 'success' if ballot.valid else 'danger',
                 'sticky': False,
             }

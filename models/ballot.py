@@ -12,17 +12,17 @@ class Ballot(models.Model):
     # name ('Full token') is base_token + center_token
     name = fields.Char(string='Full token', readonly=True)
     base_token = fields.Char(string='Base token', readonly=True)
-    voting_center_id = fields.Many2one('vote_management.voting_center', string='Voting center')
+    voting_center_id = fields.Many2one('vote_management.voting_center', string='Voting center', readonly=True)
     center_token = fields.Char(string='Center token', related='voting_center_id.token')
     suffix_ids = fields.One2many('vote_management.party_suffix', inverse_name='ballot_id', string='Suffix', readonly=True)
-    district_id = fields.Many2one('vote_management.district', related='voting_center_id.district_id', string='District')
-    election_id = fields.Many2one('vote_management.election', string='Election', required=True)
+    district_id = fields.Many2one('vote_management.district', related='voting_center_id.district_id', string='District', store=True)
+    election_id = fields.Many2one('vote_management.election', string='Election', required=True, readonly=True)
 
     # These fields are for internal use
     checked = fields.Boolean(default=False, store=True, readonly=True)
     valid = fields.Boolean(default=False, compute="_compute_state", store=True, readonly=True)
     # This field is for vote counting
-    selected_suffix = fields.Char(string='Chosen suffix')
+    selected_suffix = fields.Char(string='Chosen suffix', readonly=True)
 
     @api.model
     def create(self, vals):

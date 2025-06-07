@@ -1,0 +1,71 @@
+
+<odoo>
+    <record id="view_vote_management_election_result_tree" model="ir.ui.view">
+        <field name="name">vote_management.election_result.tree</field>
+        <field name="model">vote_management.election_result</field>
+        <field name="arch" type="xml">
+            <tree string="Election Results" create="False">
+                <field name="election_id"/>
+                <field name="result_method"/>
+                <field name="expected_votes"/>
+                <field name="received_votes"/>
+                <field name="absent_votes"/>
+                <field name="invalid_votes"/>
+                <field name="total_mps"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_vote_management_election_result_form" model="ir.ui.view">
+        <field name="name">vote_management.election_result.form</field>
+        <field name="model">vote_management.election_result</field>
+        <field name="arch" type="xml">
+            <form string="Election Result" readonly="true">
+                <sheet>
+                    <group>
+                        <field name="election_id"/>
+                        <field name="result_method"/>
+                    </group>
+                    <group>
+                        <field name="expected_votes"/>
+                        <field name="received_votes"/>
+                        <field name="absent_votes"/>
+                        <field name="invalid_votes"/>
+                        <field name="total_mps"/>
+                    </group>
+
+                    <notebook>
+                        <page string="District Results">
+                            <field name="district_result_ids">
+                                <tree readonly="1">
+                                    <field name="district_id"/>
+                                    <field name="expected_votes"/>
+                                    <field name="received_votes"/>
+                                    <field name="absent_votes"/>
+                                    <field name="num_mps"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Global Party Results">
+                            <field name="party_result_ids">
+                                <tree readonly="1">
+                                    <field name="party_id"/>
+                                    <field name="votes"/>
+                                    <field name="num_mps"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vote_management_election_results" model="ir.actions.act_window">
+        <field name="name">Election Results</field>
+        <field name="res_model">vote_management.election_result</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_vote_management_election_result_tree"/>
+    </record>
+</odoo>

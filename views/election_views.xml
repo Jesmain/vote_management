@@ -17,8 +17,30 @@
         <field name="model">vote_management.election</field>
         <field name="arch" type="xml">
             <form string="Election">
+                <header>
+                    <button name="action_open_finalize_wizard"
+                    type="object"
+                    string="Finalize elecction"
+                    class="btn-primary"
+                    attrs="{'invisible': [('state', 'in', ['finished', 'cancelled'])]}"/>
+
+                    <button name="action_cancel_election"
+                    type="object"
+                    string="Cancel election"
+                    class="btn-secondary"
+                    confirm="Are you sure you want to cancel this election? This action will delete ALL associated ballots."
+                    attrs="{'invisible': [('state', 'in', ['finished', 'cancelled'])]}"/>
+
+                    <button name="action_simulate_votes"
+                    type="object"
+                    string="Simulate elections"
+                    class="btn-secondary"
+                    attrs="{'invisible': [('state', '!=', 'in_progress')]}"
+                    />
+                </header>
                 <sheet>
                     <group>
+                        <field name="state" widget="pill"/>
                         <field name="name"/>
                         <field name="key"/>
                         <field name="district_ids"/>

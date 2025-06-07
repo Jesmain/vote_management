@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_vote_management_district_result_form" model="ir.ui.view">
+        <field name="name">vote_management.district_result.form</field>
+        <field name="model">vote_management.district_result</field>
+        <field name="arch" type="xml">
+            <form string="District Result" readonly="true">
+                <sheet>
+                    <group>
+                        <field name="election_result_id"/>
+                        <field name="district_id"/>
+                    </group>
+                    <group>
+                        <field name="expected_votes"/>
+                        <field name="received_votes"/>
+                        <field name="invalid_votes"/>
+                        <field name="absent_votes"/>
+                        <field name="num_mps"/>
+                    </group>
+                    <group>
+                        <field name="voting_center_ids" widget="many2many_tags"/>
+                    </group>
+                    <field name="party_result_ids">
+                        <tree readonly="1">
+                            <field name="party_id"/>
+                            <field name="votes"/>
+                            <field name="num_mps"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_vote_management_wizard_finish_election_form" model="ir.ui.view">
+        <field name="name">vote_management.wizard_finish_election.form</field>
+        <field name="model">vote_management.wizard_finish_election</field>
+        <field name="arch" type="xml">
+            <form string="Finalize Election">
+                <group>
+                    <field name="election_id" invisible="1"/>
+                    <field name="result_method"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_finish" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
