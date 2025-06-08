@@ -3,10 +3,10 @@
   <report
     id="action_report_ballot"
     model="vote_management.ballot"
-    string="Imprimir papeleta"
+    string="Print ballot"
     report_type="qweb-pdf"
     name="vote_management.report_ballot_template"
     file="vote_management.report_ballot_template"
-    print_report_name="'Papeleta - %s' % (object.name)"
+    print_report_name="'Ballot - %s' % (object.name)"
   />
 </odoo>
