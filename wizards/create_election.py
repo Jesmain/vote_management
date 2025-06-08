@@ -6,7 +6,7 @@ class CreateElectionWizard(models.TransientModel):
 
     name = fields.Char(string="Election name", required=True)
     hmac_key = fields.Char(string="HMAC Key", required=True)
-    district_ids = fields.Many2many('vote_management.district', string="Districts", required=True, relation='create_election_wizard_party_rel', domain="[('voting_center_ids', '!=', False)]")
+    district_ids = fields.Many2many('vote_management.district', string="Districts", required=True, relation='create_election_wizard_party_rel', domain="['&', ('voting_center_ids', '!=', False), ('party_ids', '!=', False)]")
 
     def action_create_election(self):
         election = self.env['vote_management.election'].create({

@@ -3,7 +3,7 @@ import secrets
 import hmac
 import hashlib
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class Ballot(models.Model):
     _name = 'vote_management.ballot'
@@ -17,8 +17,9 @@ class Ballot(models.Model):
     suffix_ids = fields.One2many('vote_management.party_suffix', inverse_name='ballot_id', string='Suffix', readonly=True)
     district_id = fields.Many2one('vote_management.district', related='voting_center_id.district_id', string='District', store=True)
     election_id = fields.Many2one('vote_management.election', string='Election', required=True, readonly=True)
+    simulated = fields.Boolean(related='election_id.simulated', store=True)
 
-    # These fields are for internal use
+    # These fields are for backend use
     checked = fields.Boolean(default=False, store=True, readonly=True)
     valid = fields.Boolean(default=False, compute="_compute_state", store=True, readonly=True)
     # This field is for vote counting
@@ -62,6 +63,21 @@ class Ballot(models.Model):
                 ballot.valid = ballot.selected_suffix in ballot.suffix_ids.mapped('value')
             else:
                 ballot.valid = False
+
+    def write(self, vals):
+        if 'checked' in vals and vals['checked']:
+            for record in self:
+                if record.election_id.state == 'finished':
+                    raise ValidationError("You can't change a ballot after the election is finished.")
+        return super().write(vals)
+
+    def unlink(self):
+        for record in self:
+            election = record.election_id
+            if election.state == 'finished' and not record.simulated:
+                raise ValidationError("You can't delete the ballots of a finished election.")
+        return super().unlink()
+
 
 class PartySuffix(models.Model):
     _name = 'vote_management.party_suffix'

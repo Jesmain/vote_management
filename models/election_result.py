@@ -4,6 +4,7 @@ class ElectionResult(models.Model):
     _name = 'vote_management.election_result'
     _description = 'Global results for an election'
 
+    name = fields.Char(string='Name', compute="_compute_name")
     election_id = fields.Many2one('vote_management.election', readonly=True, required=True)
     expected_votes = fields.Integer(string="Expected votes", readonly=True)
     received_votes = fields.Integer(string="Received votes", readonly=True)
@@ -28,3 +29,9 @@ class ElectionResult(models.Model):
     ], string='Method used for calculation',
     readonly=True
     )
+
+    @api.depends('election_id')
+    def _compute_name(self):
+        for record in self:
+            if record.election_id:
+                record.name = f"Result - {record.election_id.name}"

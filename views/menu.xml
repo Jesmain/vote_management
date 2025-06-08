@@ -20,7 +20,7 @@
         sequence="1"/>
 
     <menuitem
-        id="vote_management_wizard_create_election"
+        id="vote_management_election_create_wizard"
         name="Create Election"
         action="action_vote_management_wizard_create_election"
         parent="vote_management_election_root"
@@ -47,7 +47,7 @@
         sequence="1"/>
         
     <menuitem
-        id="vote_management_wizard_create_districts"
+        id="vote_management_district_create_wizard"
         name="Create districts"
         action="action_vote_management_wizard_create_districts"
         parent="vote_management_district_root"
@@ -56,9 +56,22 @@
     <menuitem
         id="vote_management_voting_center_root"
         name="Voting centers"
-        action="action_vote_management_voting_center"
         parent="vote_management_root"
         sequence="3"/>
+
+    <menuitem
+        id="vote_management_voting_center_action"
+        name="View voting centers"
+        action="action_vote_management_voting_center"
+        parent="vote_management_voting_center_root"
+        sequence="1"/>
+
+    <menuitem
+        id="vote_management_voting_center_generation_wizard"
+        name="Create voting centers"
+        action="action_vote_management_wizard_generate_voting_centers"
+        parent="vote_management_voting_center_root"
+        sequence="2"/>
 
     <menuitem
         id="vote_management_party_root"

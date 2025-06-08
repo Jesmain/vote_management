@@ -29,6 +29,17 @@
         </field>
     </record>
 
+    <record id="view_district_search" model="ir.ui.view">
+        <field name="name">vote_management.district.search</field>
+        <field name="model">vote_management.district</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="With Voting Centers" name="with_voting_centers" domain="[('voting_center_ids', '!=', False)]"/>
+                <filter string="Without Voting Centers" name="without_voting_centers" domain="[('voting_center_ids', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="action_vote_management_district" model="ir.actions.act_window">
         <field name="name">Districts</field>
         <field name="res_model">vote_management.district</field>

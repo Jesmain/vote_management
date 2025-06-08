@@ -17,6 +17,8 @@ class Election(models.Model):
         ('cancelled', 'Cancelled'),
     ], string='Election state', readonly=True)
 
+    simulated = fields.Boolean(string='simulated', default=False)
+
     _sql_constraints = [
         ("key_unique", "UNIQUE(key)", "The encryption key must be unique to each election"),
     ]
@@ -38,16 +40,28 @@ class Election(models.Model):
 
     def action_simulate_votes(self):
         self.ensure_one()
+        if self.simulated:
+            raise ValidationError("This election has already been simulated.")
         if self.state != 'in_progress':
             raise ValidationError("Only elections in progress can be simulated.")
-
-        ballots = self.env['vote_management.ballot'].search([
+        
+        all_ballots = self.env['vote_management.ballot'].search([
             ('election_id', '=', self.id),
             ('checked', '=', False),
             ('selected_suffix', '=', False),
         ])
-        if not ballots:
+        if not all_ballots:
             raise ValidationError("No available ballots to simulate.")
+
+        centers = [
+            center
+            for district in self.district_ids
+            for center in district.voting_center_ids
+        ]
+
+        ballots_by_center = defaultdict(list)
+        for b in all_ballots:
+            ballots_by_center[b.voting_center_id.id].append(b)
 
         party_ids = {p.id for d in self.district_ids for p in d.party_ids}
         if not party_ids:
@@ -56,49 +70,50 @@ class Election(models.Model):
         winning_party_id = random.choice(list(party_ids))
         other_party_ids = [pid for pid in party_ids if pid != winning_party_id] or [winning_party_id]
 
-        ballots_by_center = defaultdict(list)
-        for b in ballots:
-            ballots_by_center[b.voting_center_id.id].append(b)
+        used_ballots = 0
 
-        for ballots_in_center in ballots_by_center.values():
-            total = len(ballots_in_center)
-            if total == 0:
-                continue
+        for center in centers:
+            center_ballots = ballots_by_center.get(center.id, [])
 
-            random.shuffle(ballots_in_center)
+            expected = center.num_voters
 
-            num_absent  = round(total * 0.10)
-            num_invalid = round(total * 0.10)
-            num_valid   = total - num_absent - num_invalid
-            num_winner  = round(num_valid * 0.60)
+            selected_ballots = random.sample(center_ballots, expected)
 
-            # Absent ballots aren't modified, since they already have checked = False
+            num_absent = round(expected * 0.10)
+            num_invalid = round(expected * 0.10)
+            num_valid = expected - num_absent - num_invalid
+            num_winner = round(num_valid * 0.60)
 
+            # Absent ballots shouldn't be changed at all
             start = num_absent
 
-            for b in ballots_in_center[start:start + num_invalid]:
+            for b in selected_ballots[start:start + num_invalid]:
                 b.checked = True
             start += num_invalid
 
-            for b in ballots_in_center[start:start + num_winner]:
-                suffixes = b.suffix_ids.filtered(lambda s: s.party_id.id == winning_party_id)
-                if suffixes:
-                    b.selected_suffix = random.choice(suffixes).value
+            for b in selected_ballots[start:start + num_winner]:
+                suffix = b.suffix_ids.filtered(lambda s: s.party_id.id == winning_party_id)
+                if suffix:
+                    b.selected_suffix = suffix[0].value
                     b.checked = True
             start += num_winner
 
-            for b in ballots_in_center[start:]:
-                suffixes = b.suffix_ids.filtered(lambda s: s.party_id.id in other_party_ids)
-                if suffixes:
-                    b.selected_suffix = random.choice(suffixes).value
+            for b in selected_ballots[start:]:
+                suffix = b.suffix_ids.filtered(lambda s: s.party_id.id in other_party_ids)
+                if suffix:
+                    b.selected_suffix = random.choice(suffix).value
                     b.checked = True
+
+            used_ballots += expected
+
+        self.simulated = True
 
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': "Simulation complete",
-                'message': f"{len(ballots)} ballots have been used.",
+                'message': f"{used_ballots} ballots have been used (based on expected voters).",
                 'type': 'success',
                 'sticky': False,
             }

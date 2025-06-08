@@ -10,7 +10,7 @@
     'author': "Jesmain",
     'website': "https://github.com/Jesmain/vote_management",
     'category': 'Extra Tools',
-    'version': '0.1',
+    'version': '1.0',
     'depends': ['base', 'website', 'web'],
     'data': [
         'security/groups.xml',
@@ -23,6 +23,7 @@
         'wizards/ballot_validation_views.xml',
         'wizards/create_districts_views.xml',
         'wizards/finish_election_views.xml',
+        'wizards/generate_voting_centers_views.xml',
         'views/election_views.xml',
         'views/district_views.xml',
         'views/voting_center_views.xml',

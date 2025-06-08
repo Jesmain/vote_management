@@ -74,7 +74,10 @@
                     <filter name="group_center" string="Voting Center" context="{'group_by': 'voting_center_id'}"/>
                     <filter name="group_district" string="District" context="{'group_by': 'district_id'}"/>
                     <filter name="group_checked" string="Used" context="{'group_by': 'checked'}"/>
+                    <filter name="group_simulated" string="Simulated" context="{'group_by': 'simulated'}"/>
                 </group>
+                <filter string="Simulated ballots" name="simulated_true" domain="[('simulated', '=', True)]"/>
+                <filter string="Real ballots" name="simulated_false" domain="[('simulated', '=', False)]"/>
             </search>
         </field>
     </record>

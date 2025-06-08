@@ -7,6 +7,7 @@
                 <group>
                     <field name="country_id"/>
                     <field name="party_ids" widget="many2many_tags"/>
+                    <field name="num_mps"/>
                 </group>
                 <footer>
                     <button name="action_create_districts"
