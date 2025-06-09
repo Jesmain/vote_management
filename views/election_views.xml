@@ -52,6 +52,21 @@
         </field>
     </record>
 
+    <record id="view_election_search" model="ir.ui.view">
+        <field name="name">vote_management.election.search</field>
+        <field name="model">vote_management.election</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="true" string="Group by">
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_simulated" string="Simulated" context="{'group_by': 'simulated'}"/>
+                </group>
+                <filter string="Simulated" name="simulated" domain="[('simulated', '=', True)]"/>
+                <filter string="Real" name="not_simulated" domain="[('simulated', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="action_vote_management_election" model="ir.actions.act_window">
         <field name="name">Election</field>
         <field name="res_model">vote_management.election</field>

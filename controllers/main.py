@@ -17,12 +17,15 @@ class VoteValidationController(http.Controller):
         if token:
             ballot = request.env['vote_management.ballot'].sudo().search([('name', '=', token)], limit=1)
             if ballot:
-                result = 'valid' if ballot.valid else 'not_valid'
-                party_suffix = ballot.selected_suffix if ballot.valid else None
-                if party_suffix:
-                    for suffix in ballot.suffix_ids:
-                        if party_suffix == suffix.value:
-                            party_name = suffix.party_id.name
+                if ballot.checked:
+                    result = 'valid' if ballot.valid else 'not_valid'
+                    party_suffix = ballot.selected_suffix if ballot.valid else None
+                    if party_suffix:
+                        for suffix in ballot.suffix_ids:
+                            if party_suffix == suffix.value:
+                                party_name = suffix.party_id.name
+                else:
+                    result = 'not_checked'
             else:
                 result = 'not_found'
 

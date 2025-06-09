@@ -118,31 +118,54 @@ class FinishElectionWizard(models.TransientModel):
                     votes_by_party[pid] += 1
                     party_global_votes[pid] = party_global_votes.get(pid, 0) + 1
 
-            total_votes   = sum(votes_by_party.values())
-            max_votes     = max(votes_by_party.values(), default=0)
+            total_votes = sum(votes_by_party.values())
+            max_votes = max(votes_by_party.values(), default=0)
 
             district_lines = []
             assigned_mps = 0
-            winners = []
-            if self.result_method == 'majority' and max_votes > 0:
-                winners = [ pid for pid, v in votes_by_party.items() if v == max_votes ]
 
-            for pid, votes in votes_by_party.items():
-                if self.result_method == 'majority':
+            if self.result_method == 'majority' and max_votes > 0:
+                winners = [pid for pid, v in votes_by_party.items() if v == max_votes]
+                for pid, votes in votes_by_party.items():
                     if pid in winners:
                         mps = district.num_mps // len(winners)
                     else:
                         mps = 0
-                elif self.result_method == 'percentage':
-                    mps = round((votes / total_votes) * district.num_mps) if total_votes else 0
+                    district_lines.append({
+                        'district_result_id': dr.id,
+                        'party_id': pid,
+                        'votes': votes,
+                        'num_mps': mps,
+                    })
+                    assigned_mps += mps
 
-                assigned_mps += mps
-                district_lines.append({
-                    'district_result_id': dr.id,
-                    'party_id': pid,
-                    'votes': votes,
-                    'num_mps': mps,
-                })
+            elif self.result_method == 'percentage' and total_votes:
+                distribution = {pid: 0 for pid in votes_by_party}
+                remainders = []
+                total_assigned = 0
+
+                for pid, votes in votes_by_party.items():
+                    proportion = (votes / total_votes) * district.num_mps
+                    base = int(proportion)
+                    remainder = proportion - base
+                    distribution[pid] = base
+                    remainders.append((remainder, pid))
+                    total_assigned += base
+
+                remaining = district.num_mps - total_assigned
+                remainders.sort(reverse=True)
+                for i in range(remaining):
+                    _, pid = remainders[i]
+                    distribution[pid] += 1
+
+                for pid, mps in distribution.items():
+                    district_lines.append({
+                        'district_result_id': dr.id,
+                        'party_id': pid,
+                        'votes': votes_by_party[pid],
+                        'num_mps': mps,
+                    })
+                    assigned_mps += mps
 
             if assigned_mps > district.num_mps:
                 excess = assigned_mps - district.num_mps
@@ -154,6 +177,7 @@ class FinishElectionWizard(models.TransientModel):
 
             for vals in district_lines:
                 self.env['vote_management.result_line'].create(vals)
+
 
         party_global_mps = {pid: 0 for pid in party_global_votes}
 

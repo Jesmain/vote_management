@@ -64,44 +64,29 @@ class Election(models.Model):
             ballots_by_center[b.voting_center_id.id].append(b)
 
         party_ids = {p.id for d in self.district_ids for p in d.party_ids}
-        if not party_ids:
-            raise ValidationError("No parties found in this election.")
-
-        winning_party_id = random.choice(list(party_ids))
-        other_party_ids = [pid for pid in party_ids if pid != winning_party_id] or [winning_party_id]
-
+        
+        party_ids = list(party_ids)
         used_ballots = 0
 
         for center in centers:
             center_ballots = ballots_by_center.get(center.id, [])
-
             expected = center.num_voters
 
             selected_ballots = random.sample(center_ballots, expected)
 
             num_absent = round(expected * 0.10)
             num_invalid = round(expected * 0.10)
-            num_valid = expected - num_absent - num_invalid
-            num_winner = round(num_valid * 0.60)
 
-            # Absent ballots shouldn't be changed at all
             start = num_absent
-
             for b in selected_ballots[start:start + num_invalid]:
                 b.checked = True
             start += num_invalid
 
-            for b in selected_ballots[start:start + num_winner]:
-                suffix = b.suffix_ids.filtered(lambda s: s.party_id.id == winning_party_id)
+            for b in selected_ballots[start:]:
+                random_party_id = random.choice(party_ids)
+                suffix = b.suffix_ids.filtered(lambda s: s.party_id.id == random_party_id)
                 if suffix:
                     b.selected_suffix = suffix[0].value
-                    b.checked = True
-            start += num_winner
-
-            for b in selected_ballots[start:]:
-                suffix = b.suffix_ids.filtered(lambda s: s.party_id.id in other_party_ids)
-                if suffix:
-                    b.selected_suffix = random.choice(suffix).value
                     b.checked = True
 
             used_ballots += expected

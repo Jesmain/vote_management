@@ -76,6 +76,8 @@
                     <filter name="group_checked" string="Used" context="{'group_by': 'checked'}"/>
                     <filter name="group_simulated" string="Simulated" context="{'group_by': 'simulated'}"/>
                 </group>
+                <filter string="Used" name="used" domain="[('checked', '=', True)]"/>
+                <filter string="Unused" name="unused" domain="[('checked', '=', False)]"/>
                 <filter string="Simulated ballots" name="simulated_true" domain="[('simulated', '=', True)]"/>
                 <filter string="Real ballots" name="simulated_false" domain="[('simulated', '=', False)]"/>
             </search>

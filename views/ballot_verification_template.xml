@@ -17,6 +17,9 @@
                         <t t-if="result == 'not_found'">
                         A ballot with that token could not be found.
                         </t>
+                        <t t-elif="result == 'not_checked'">
+                        A ballot with that token has been found, but has not been checked.
+                        </t>
                         <t t-elif="result == 'not_valid'">
                         A ballot with that token has been found, but the vote is not valid.
                         </t>
