@@ -19,7 +19,7 @@ class Ballot(models.Model):
     election_id = fields.Many2one('vote_management.election', string='Election', required=True, readonly=True)
     simulated = fields.Boolean(related='election_id.simulated', store=True)
 
-    # These fields are for backend use
+    # These fields are for validation purposes
     checked = fields.Boolean(default=False, store=True, readonly=True)
     valid = fields.Boolean(default=False, compute="_compute_state", store=True, readonly=True)
     # This field is for vote counting

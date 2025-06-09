@@ -10,7 +10,6 @@ class VotingCenter(models.Model):
     name = fields.Char(string='Center name', required=True)
     token = fields.Char(string='Token', readonly=True) # Determined when the record is saved
     district_id = fields.Many2one('vote_management.district', string='District', required=True)
-    # This field serves to keep track of absentee voters, i.e. people who didn't go to vote
     num_voters = fields.Integer(string='Expected voters', required=True)
     num_ballots = fields.Integer(string='Amount of ballots', required=True)
 
@@ -18,7 +17,6 @@ class VotingCenter(models.Model):
     def create(self, vals):
         district = self.env['vote_management.district'].search([('id', '=', vals['district_id'])])
         # The state's id's length must always be 3, padding or truncating as needed
-        # Barring certain cases, like with the value 1000, the resulting token fragment should not be 000
         state_id_str = f"{int(district.state_id.id % 1000):03d}"
         random_part = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(4))
         token = state_id_str + random_part
