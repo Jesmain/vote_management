@@ -72,7 +72,10 @@ class Election(models.Model):
             center_ballots = ballots_by_center.get(center.id, [])
             expected = center.num_voters
 
-            selected_ballots = random.sample(center_ballots, expected)
+            available = len(center_ballots)
+            to_take   = min(center.num_voters, available)
+
+            selected_ballots = random.sample(center_ballots, to_take)
 
             num_absent = round(expected * 0.10)
             num_invalid = round(expected * 0.10)
